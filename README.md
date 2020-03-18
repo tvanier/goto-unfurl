@@ -1,11 +1,14 @@
-GoTo Unfurl
+# GoTo Unfurl
 
-This repository contains a function to "unfurl" GoTo join and registration links.
+This repository contains a Javascript function to "unfurl" GoTo join and registration links. From a meeting id, name or a webinar key, the function fetches the meeting/webinar organizer and session details, and returns html tags parsed by social media.
 
-Example of unfurled join link:
-![](doc/img/join-gotomeeting.png)
+Example of unfurled join link in Slack:<br>
+<img src="doc/img/join-gotomeeting.png" width="600" />
 
 See below other examples.
+
+The function returns tags as documented in the "classic unfurling" section of this Slack doc
+https://api.slack.com/docs/message-link-unfurling
 
 The function is currently deployed on Netlify at `https://tvanier.netlify.com/.netlify/functions/goto-unfurl`
 
@@ -20,6 +23,11 @@ The function is currently deployed on Netlify at `https://tvanier.netlify.com/.n
 ## Implementation
 
 The current function implementation depends on Node.js version 10 or greater. There is no other dependency.
+The whole function code is in `goto-unfurl.js`, which currently
+- works against the G2M production environment (no ED, RC etc)
+- fetches images (ex: logo) from `tvanier.netlify.com`
+- is meant to be deployed on Netlify as documented here
+https://docs.netlify.com/functions/overview/
 
 ## Testing
 
@@ -47,4 +55,5 @@ The links should also work in other media such as Facebook and Twitter (not test
 ## Examples
 
 #### Webinar registration link in Slack
-![](doc/img/register-gotowebinar.png)
+
+<img src="doc/img/register-gotowebinar.png" width="600" />
