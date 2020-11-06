@@ -17,7 +17,7 @@ const escapeHTML = (function() {
   }
 )();
 
-const gotoBaseUrl = 'https://tvanier.netlify.com/goto';
+const gotoBaseUrl = 'https://tvanier.netlify.app/goto';
 
 const generateHTML = ({ product, subject, description, organizerName, url, imageUrl, redirectUrl, twitterLabels = [] }) =>  {
   return `
