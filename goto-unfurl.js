@@ -17,7 +17,7 @@ const escapeHTML = (function() {
   }
 )();
 
-const gotoBaseUrl = 'https://tvanier.netlify.app/goto';
+let gotoBaseUrl = '/goto';
 
 const generateHTML = ({ product, subject, description, organizerName, url, imageUrl, redirectUrl, twitterLabels = [] }) =>  {
   return `
@@ -63,8 +63,22 @@ const generateHTML = ({ product, subject, description, organizerName, url, image
     </html>`;
 }
 
-exports.handler = async (event) => {
+exports.handler = async (event, context) => {
   let response;
+
+  try {
+    // determine base url if netlify context
+    const { clientContext = {} } = context || {};
+    const { custom = {} } = clientContext;
+    const { netlify } = custom;
+
+    if (netlify) {
+      const decoded = JSON.parse(Buffer.from(netlify, 'base64').toString('utf-8'));
+      gotoBaseUrl = `${decoded.site_url}/goto`;
+    }
+  } catch (error) {
+    console.log('cannot decode netlify context', error);
+  }
 
   try {
     const match = /\/(join|meet|connect|register)\/([\w-_]+)$/.exec(event.path.toLowerCase());
@@ -261,7 +275,7 @@ const handleMeeting = async (meetingId = '', custom = {}) => {
     subject,
     description,
     organizerName,
-    url: redirectUrl, // `${gotoBaseUrl}/#/meeting/${meetingId}/attend`,
+    url: redirectUrl,
     imageUrl,
     redirectUrl,
     twitterLabels
@@ -369,7 +383,7 @@ const handleWebinar = async (webinarKey) => {
     subject,
     description,
     organizerName,
-    url: redirectUrl, // `${gotoBaseUrl}/#/webinar/${webinarKey}/register`,
+    url: redirectUrl,
     imageUrl,
     redirectUrl,
     twitterLabels
